@@ -18,8 +18,9 @@ interface ChartProps {
 }
 
 function Chart({ coinId }: ChartProps) {
-  const { isLoading, data } = useQuery<IHistorical[]>(['ohlcv', coinId], () =>
-    fetchCoinHistory(coinId),
+  const { isLoading, data } = useQuery<IHistorical[]>(
+    ['ohlcv', coinId],
+    () => fetchCoinHistory(coinId),
     {
       refetchInterval: 10000,
     }
@@ -30,51 +31,46 @@ function Chart({ coinId }: ChartProps) {
         'Loading Chart'
       ) : (
         <ApexChart
-          type="line"
+          type="candlestick"
           series={[
             {
-              name: 'Price',
-              data: data?.map((price) => price.close) as number[],
+              data: data?.map((price) => ({
+                x: price.time_close,
+                y: [price.open, price.high, price.low, price.close],
+              }))!,
             },
           ]}
           options={{
-            theme: { mode: 'dark' },
+            theme: {
+              mode: 'dark',
+            },
             chart: {
               height: 300,
               width: 500,
-              background: 'none',
               toolbar: {
                 show: false,
               },
+              background: 'transparant',
             },
-            colors: ['#ff0000'],
-            stroke: {
-              curve: 'straight',
-              width: 6,
-            },
-            yaxis: {
-              show: false,
+            grid: {
+              show: true,
             },
             xaxis: {
+              axisBorder: { show: true },
+              axisTicks: { show: true },
               labels: {
-                show: false,
-              },
-              axisTicks: {
-                show: false,
+                style: { colors: '#FFFFFF' },
               },
               type: 'datetime',
               categories: data?.map((price) => price.time_close),
             },
-            fill: {
-              type: 'gradient',
-              gradient: { gradientToColors: ['#ffdd00'], stops: [0, 100] },
-            },
-            tooltip: {
-              y: {
-                formatter: (value) => `$ ${value.toFixed(2)}`,
-              },
-              x: {
-                format: 'yyyy/MM/dd',
+            yaxis: {
+              show: true,
+              labels: {
+                style: { colors: '#FFFFFF' },
+                formatter: (val) => {
+                  return val.toFixed(2);
+                },
               },
             },
           }}

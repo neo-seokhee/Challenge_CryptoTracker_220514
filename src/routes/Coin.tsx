@@ -21,25 +21,39 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
-  height: 15vh;
+  height: 20vh;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const HeaderWrapper = styled.div`
+const HeaderColumn = styled.div`
+  width: 33.33%;
+  height: 100%;
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`;
+
+const Back = styled.div`
+  font-size: 16px;
+  color: ${(props) => props.theme.accentColor};
+  margin: 20px 0 0 10px;
+  span {
+  }
+`;
+
+const HeaderWrapper = styled.div`
+  width: 33.33%;
+  display: flex;
+  height: 15vh;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const Back = styled.div`
-  position: absolute;
-  left: 220px;
-  top: 33px;
-  font-size: 30px;
-  color: rgba(255, 255, 255, 0.5);
+const HeaderColumnRest = styled.div`
+  width: 33.33%;
 `;
 
 const Img = styled.img`
@@ -220,15 +234,20 @@ function Coin() {
       </Helmet>
       {/* Header */}
       <Header>
-        <HeaderWrapper>
+        <HeaderColumn>
           <Link to={`/`}>
-            <Back>&larr;</Back>
+            <Back>
+              &larr; <span>Home</span>
+            </Back>
           </Link>
+        </HeaderColumn>
+        <HeaderWrapper>
           <Img src={`https://cryptocurrencyliveprices.com/img/${coinId}.png`} />
           <Title>
             {state?.name ? state.name : loading ? 'Loading' : infoData?.name}
           </Title>
         </HeaderWrapper>
+        <HeaderColumnRest></HeaderColumnRest>
       </Header>
 
       {/* Coins List */}
