@@ -28,32 +28,33 @@ const Header = styled.header`
 `;
 
 const HeaderColumn = styled.div`
-  width: 33.33%;
+  width: 15%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: flex-start;
 `;
 
 const Back = styled.div`
   font-size: 16px;
   color: ${(props) => props.theme.accentColor};
-  margin: 20px 0 0 10px;
+  margin: 35px 0 0 10px;
   span {
   }
 `;
 
 const HeaderWrapper = styled.div`
-  width: 33.33%;
+  width: 70%;
   display: flex;
-  height: 15vh;
+  height: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
 const HeaderColumnRest = styled.div`
-  width: 33.33%;
+  width: 15%;
 `;
 
 const Img = styled.img`
@@ -64,7 +65,7 @@ const Img = styled.img`
 `;
 
 const Title = styled.h1`
-  font-size: 48px;
+  font-size: 38px;
   color: ${(props) => props.theme.accentColor};
   margin-bottom: 15px;
 `;

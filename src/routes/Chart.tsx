@@ -69,7 +69,9 @@ function Chart({ coinId }: ChartProps) {
               labels: {
                 style: { colors: '#FFFFFF' },
                 formatter: (val) => {
-                  return val.toFixed(2);
+                  return `$${val
+                    .toFixed(2)
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
                 },
               },
             },
