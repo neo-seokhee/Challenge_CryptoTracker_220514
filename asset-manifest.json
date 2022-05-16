@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/Challenge_CryptoTracker_220514/static/js/main.c622c210.js",
+    "main.js": "/Challenge_CryptoTracker_220514/static/js/main.41ef523c.js",
     "index.html": "/Challenge_CryptoTracker_220514/index.html",
-    "main.c622c210.js.map": "/Challenge_CryptoTracker_220514/static/js/main.c622c210.js.map"
+    "main.41ef523c.js.map": "/Challenge_CryptoTracker_220514/static/js/main.41ef523c.js.map"
   },
   "entrypoints": [
-    "static/js/main.c622c210.js"
+    "static/js/main.41ef523c.js"
   ]
 }
