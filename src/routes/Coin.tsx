@@ -7,7 +7,6 @@ import {
   Link,
   useMatch,
 } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import Chart from './Chart';
 import Price from './Price';
 import { useQuery } from 'react-query';
@@ -78,7 +77,7 @@ const Loader = styled.span`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.boxColor};
   padding: 20px 30px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -114,7 +113,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.boxColor};
   padding: 10px 0px;
   border-radius: 10px;
   display: block;
@@ -124,6 +123,10 @@ const Tab = styled.span<{ isActive: boolean }>`
     display: block;
     transition: color 0.2s ease-in-out;
   }
+`;
+
+const Text = styled.span`
+  color: ${(props) => props.theme.textColor};
 `;
 
 interface LocationState {
@@ -187,11 +190,13 @@ interface PriceData {
   };
 }
 
+interface ICoinProps {}
+
 function Coin() {
   const { coinId } = useParams();
   const { state } = useLocation() as LocationState;
-  const priceMatch = useMatch('/:coinId/price');
-  const chartMatch = useMatch('/:coinId/chart');
+  const priceMatch = useMatch(`${process.env.PUBLIC_URL}/:coinId/price`);
+  const chartMatch = useMatch(`${process.env.PUBLIC_URL}/:coinId/chart`);
 
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ['info', coinId],
@@ -236,7 +241,7 @@ function Coin() {
       {/* Header */}
       <Header>
         <HeaderColumn>
-          <Link to={`/`}>
+          <Link to={`${process.env.PUBLIC_URL}/`}>
             <Back>
               &larr; <span>Home</span>
             </Back>
@@ -258,47 +263,51 @@ function Coin() {
         <>
           <Overview>
             <OverviewItem>
-              <span>Rank:</span>
-              <span>{infoData?.rank}</span>
+              <Text>Rank:</Text>
+              <Text>{infoData?.rank}</Text>
             </OverviewItem>
             <OverviewItem>
-              <span>Symbol:</span>
-              <span>{infoData?.symbol}</span>
+              <Text>Symbol:</Text>
+              <Text>{infoData?.symbol}</Text>
             </OverviewItem>
             <OverviewItem>
-              <span>Price:</span>
-              <span>
+              <Text>Price:</Text>
+              <Text>
                 $
                 {tickersData?.quotes.USD.price
                   .toFixed(2)
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              </span>
+              </Text>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
-              <span>Total Supply:</span>
-              <span>
+              <Text>Total Supply:</Text>
+              <Text>
                 {tickersData?.total_supply.toLocaleString('ko-KR')}{' '}
                 {infoData?.symbol}
-              </span>
+              </Text>
             </OverviewItem>
             <OverviewItem>
-              <span>Max Supply:</span>
-              <span>
+              <Text>Max Supply:</Text>
+              <Text>
                 {tickersData?.max_supply.toLocaleString('ko-KR')}{' '}
                 {infoData?.symbol}
-              </span>
+              </Text>
             </OverviewItem>
           </Overview>
 
           <Tabs>
             <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
+              <Link to={`${process.env.PUBLIC_URL}/${coinId}/chart`}>
+                Chart
+              </Link>
             </Tab>
             <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
+              <Link to={`${process.env.PUBLIC_URL}/${coinId}/price`}>
+                Price
+              </Link>
             </Tab>
           </Tabs>
 

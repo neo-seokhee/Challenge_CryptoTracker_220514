@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { fetchCoins } from './api';
 import { Helmet } from 'react-helmet';
+import { useSetRecoilState } from 'recoil';
+import { isDarkAtom } from '../atoms';
+import { FontBox } from '../styles';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -12,17 +15,41 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
-  height: 10vh;
+  height: 15vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
+`;
+
+const Title = styled.h1`
+  margin: 20px 0;
+  font-size: 48px;
+  color: ${(props) => props.theme.accentColor};
+`;
+
+const Toggle = styled.button`
+  margin: 0 0 20px 0;
+  padding: 10px 30px;
+  background-color: ${(props) => props.theme.accentColor};
+  color: #192a56;
+  border: none;
+  border-radius: 8px;
+  transition: 0.2s ease-in-out;
+  &:active {
+    transform: scale(0.96);
+    transition: 0.05s ease-in-out;
+  }
+  &:hover {
+    font-size: 14px;
+  }
 `;
 
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
   background-color: white;
-  color: ${(props) => props.theme.bgColor};
+  color: black;
   margin-bottom: 12px;
   padding: 15px;
   border-radius: 15px;
@@ -36,11 +63,6 @@ const Coin = styled.li`
       color: ${(props) => props.theme.accentColor};
     }
   }
-`;
-
-const Title = styled.h1`
-  font-size: 48px;
-  color: ${(props) => props.theme.accentColor};
 `;
 
 const Loader = styled.span`
@@ -69,7 +91,9 @@ interface ICoin {
   type: string;
 }
 
-function Coins() {
+interface ICoinsProps {}
+
+function Coins({}: ICoinsProps) {
   // Fetch by useState & useEffect
   // const [coins, setCoins] = useState<ICoin[]>([]);
   // const [loading, setLoading] = useState(true);
@@ -81,6 +105,8 @@ function Coins() {
   //   })();
   // }, []);
 
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAom = () => setDarkAtom((prev) => !prev);
   const { isLoading, data } = useQuery<ICoin[]>('allCoins', fetchCoins);
 
   return (
@@ -90,7 +116,12 @@ function Coins() {
       </Helmet>
       {/* Header */}
       <Header>
-        <Title>Crypto Board</Title>
+        <Title>
+          <FontBox>
+            <h1>Crypto Board</h1>
+          </FontBox>
+        </Title>
+        <Toggle onClick={toggleDarkAom}>Change Mode</Toggle>
       </Header>
 
       {/* Coins List */}
@@ -100,7 +131,10 @@ function Coins() {
         <CoinsList>
           {data?.slice(0, 50).map((coin) => (
             <Coin key={coin.id}>
-              <Link to={`/${coin.id}/chart`} state={{ name: coin.name }}>
+              <Link
+                to={`${process.env.PUBLIC_URL}/${coin.id}/chart`}
+                state={{ name: coin.name }}
+              >
                 <CoinWrapper>
                   <Img
                     src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`}
